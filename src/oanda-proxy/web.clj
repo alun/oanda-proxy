@@ -1,21 +1,21 @@
-(ns clojure-getting-started.web
+(ns oanda-proxy.web
   (:require [compojure.core :refer [defroutes GET PUT POST DELETE ANY]]
             [compojure.handler :refer [site]]
             [compojure.route :as route]
             [clojure.java.io :as io]
             [ring.adapter.jetty :as jetty]
+            [clj-http.client :as client]
             [environ.core :refer [env]]))
 
-(defn splash []
-  {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body (pr-str ["Hello" :from 'Heroku])})
+(def practice-base "https://api-fxpractice.oanda.com")
+(def token "e3aceb850d4aefc315793b5816e4ae3f-b2087cd73a4951bcfcf1cbea1430ea2f")
 
 (defroutes app
-  (GET "/" []
-       (splash))
-  (ANY "*" []
-       (route/not-found (slurp (io/resource "404.html")))))
+  (GET "*" req
+       (print (:params req))
+       (client/get (str practice-base (:uri req))
+                          {:headers {:Authorization (str "Bearer " token)}
+                           :query-params (-> req :params (dissoc :*))})))
 
 (defn -main [& [port]]
   (let [port (Integer. (or port (env :port) 5000))]
