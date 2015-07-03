@@ -7,8 +7,8 @@
             [clj-http.client :as client]
             [environ.core :refer [env]]))
 
-(def practice-base "https://api-fxpractice.oanda.com")
-(def token "e3aceb850d4aefc315793b5816e4ae3f-b2087cd73a4951bcfcf1cbea1430ea2f")
+(def practice-base (:base-url env))
+(def token (:access-token env))
 
 (defroutes app
   (GET "*" req
