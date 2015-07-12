@@ -1,33 +1,22 @@
 
 # oanda-proxy
 
-A barebones Clojure app, which can easily be deployed to Heroku.
+This software provides an HTTP gateway which will add your credentials to any
+call to the [Oanda REST API](http://developer.oanda.com/rest-live/introduction/).
 
-This application support the [Getting Started with Clojure](https://devcenter.heroku.com/articles/getting-started-with-clojure) article - check it out.
+[Authentication](http://developer.oanda.com/rest-live/authentication/) is done by simple adding a header to your call.
 
-## Running Locally
+This reverse proxy will add the header to any of your calls.
 
-Make sure you have Clojure installed.  Also, install the [Heroku Toolbelt](https://toolbelt.heroku.com/).
+## How to try
 
-```sh
-$ lein repl
-user=> (require 'oanda-proxy.web)
-user=>(def server (oanda-proxy.web/-main))
+Simplest way is just to use it:
+
+```
+curl dev.katlex.com:3001/v1/accounts
 ```
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+## How to run your own
 
-## Deploying to Heroku
-
-```sh
-$ heroku create
-$ git push heroku master
-$ heroku open
-```
-
-## Documentation
-
-For more information about using Clojure on Heroku, see these Dev Center articles:
-
-- [Clojure on Heroku](https://devcenter.heroku.com/categories/clojure)
-
+Its proposed to use [the docker image](https://registry.hub.docker.com/u/alexlun/oanda-proxy/).
+But of course you could run it with `lein` as well.
