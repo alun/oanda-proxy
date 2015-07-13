@@ -7,18 +7,18 @@
             [clj-http.client :as client]
             [environ.core :refer [env]]))
 
-(def practice-base (:base-url env))
+(def base-url (:base-url env))
 (def token (:access-token env))
 
 (defroutes app
   (GET "*" req
        (print (:params req))
-       (client/get (str practice-base (:uri req))
+       (client/get (str base-url (:uri req))
                           {:headers {:Authorization (str "Bearer " token)}
                            :query-params (-> req :params (dissoc :*))})))
 
-(defn -main [& [port]]
-  (let [port (Integer. (or port (env :port) 5000))]
+(defn -main [& args]
+  (let [port (Integer. (or (env :port) 5000))]
     (jetty/run-jetty (site #'app) {:port port :join? false})))
 
 ;; For interactive development:
